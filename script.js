@@ -6,7 +6,7 @@
 /* ── PWA ── */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () =>
-    navigator.serviceWorker.register('./service-worker.js').catch(() => {})
+    navigator.serviceWorker.register('./service-worker.js').catch(() => { })
   );
 }
 let deferredInstall = null;
@@ -36,7 +36,7 @@ function openDB() {
       const d = e.target.result;
       if (!d.objectStoreNames.contains('students')) {
         d.createObjectStore('students', { keyPath: 'studentId' })
-         .createIndex('name', 'name', { unique: false });
+          .createIndex('name', 'name', { unique: false });
       }
       if (!d.objectStoreNames.contains('sessions')) {
         d.createObjectStore('sessions', { keyPath: 'sessionId' });
@@ -52,18 +52,18 @@ function openDB() {
   });
 }
 
-const dbGet    = (store, key) => idb(store, 'readonly',  s => s.get(key));
-const dbGetAll = store        => idb(store, 'readonly',  s => s.getAll());
-const dbPut    = (store, val) => idb(store, 'readwrite', s => s.put(val));
-const dbAdd    = (store, val) => idb(store, 'readwrite', s => s.add(val));
-const dbDel    = (store, key) => idb(store, 'readwrite', s => s.delete(key));
-const dbIdx    = (store, idx, val) => idb(store, 'readonly', s => s.index(idx).getAll(val));
+const dbGet = (store, key) => idb(store, 'readonly', s => s.get(key));
+const dbGetAll = store => idb(store, 'readonly', s => s.getAll());
+const dbPut = (store, val) => idb(store, 'readwrite', s => s.put(val));
+const dbAdd = (store, val) => idb(store, 'readwrite', s => s.add(val));
+const dbDel = (store, key) => idb(store, 'readwrite', s => s.delete(key));
+const dbIdx = (store, idx, val) => idb(store, 'readonly', s => s.index(idx).getAll(val));
 
 function idb(store, mode, fn) {
   return new Promise((res, rej) => {
     const r = fn(db.transaction(store, mode).objectStore(store));
     r.onsuccess = () => res(r.result);
-    r.onerror   = e => rej(e.target.error);
+    r.onerror = e => rej(e.target.error);
   });
 }
 
@@ -73,14 +73,14 @@ function idb(store, mode, fn) {
 const stack = [];
 
 const PAGE_TITLES = {
-  'page-dashboard':'QR Attendance','page-add-student':'Add Student',
-  'page-students':'Students List','page-profile':'Student Profile',
-  'page-edit-student':'Edit Student','page-generate-qr':'Generate QR Codes',
-  'page-qr-view':'QR Card','page-start-attendance':'Start Attendance',
-  'page-scanner':'Scanning...','page-history':'Attendance History',
-  'page-session-detail':'Session Detail','page-export-students':'Export Students',
-  'page-export-attendance':'Export Attendance','page-stats':'Statistics',
-  'page-restore':'Restore Data'
+  'page-dashboard': 'QR Attendance', 'page-add-student': 'Add Student',
+  'page-students': 'Students List', 'page-profile': 'Student Profile',
+  'page-edit-student': 'Edit Student', 'page-generate-qr': 'Generate QR Codes',
+  'page-qr-view': 'QR Card', 'page-start-attendance': 'Start Attendance',
+  'page-scanner': 'Scanning...', 'page-history': 'Attendance History',
+  'page-session-detail': 'Session Detail', 'page-export-students': 'Export Students',
+  'page-export-attendance': 'Export Attendance', 'page-stats': 'Statistics',
+  'page-restore': 'Restore Data'
 };
 
 function showPage(id, push = true) {
@@ -97,12 +97,12 @@ function showPage(id, push = true) {
   document.getElementById('topbar-title').textContent = PAGE_TITLES[id] || 'QR Attendance';
 
   // Page loaders
-  if (id === 'page-students')          loadStudentsList();
-  if (id === 'page-generate-qr')       loadQRStudents();
-  if (id === 'page-history')           loadSessions();
-  if (id === 'page-stats')             loadStats();
+  if (id === 'page-students') loadStudentsList();
+  if (id === 'page-generate-qr') loadQRStudents();
+  if (id === 'page-history') loadSessions();
+  if (id === 'page-stats') loadStats();
   if (id === 'page-export-attendance') loadSessionsForExport();
-  if (id === 'page-dashboard')         updateDashStats();
+  if (id === 'page-dashboard') updateDashStats();
 }
 
 function goBack() {
@@ -127,14 +127,14 @@ function showToast(msg, type = '') {
 let modalCb = null;
 function showModal(title, body, cb) {
   document.getElementById('modal-title').textContent = title;
-  document.getElementById('modal-body').textContent  = body;
+  document.getElementById('modal-body').textContent = body;
   document.getElementById('modal-overlay').classList.remove('hidden');
   modalCb = cb;
 }
-function closeModal()       { document.getElementById('modal-overlay').classList.add('hidden'); modalCb = null; }
-function modalConfirmAction(){ if (modalCb) modalCb(); closeModal(); }
+function closeModal() { document.getElementById('modal-overlay').classList.add('hidden'); modalCb = null; }
+function modalConfirmAction() { if (modalCb) modalCb(); closeModal(); }
 
-function showFormMsg(id, msg, type='success') {
+function showFormMsg(id, msg, type = 'success') {
   const el = document.getElementById(id);
   el.textContent = msg; el.className = 'form-msg ' + type;
   el.classList.remove('hidden');
@@ -173,7 +173,7 @@ function handleEditPhotoUpload(e) {
    ADD / EDIT / DELETE STUDENT
 ══════════════════════════════════════ */
 function resetStudentForm() {
-  ['f-name','f-id','f-father','f-email','f-phone'].forEach(i => document.getElementById(i).value = '');
+  ['f-name', 'f-id', 'f-father', 'f-email', 'f-phone'].forEach(i => document.getElementById(i).value = '');
   currentPhoto = null;
   document.getElementById('photo-preview').classList.add('hidden');
   document.getElementById('photo-placeholder').classList.remove('hidden');
@@ -181,11 +181,11 @@ function resetStudentForm() {
 }
 
 async function saveStudent() {
-  const name      = document.getElementById('f-name').value.trim();
+  const name = document.getElementById('f-name').value.trim();
   const studentId = document.getElementById('f-id').value.trim();
-  const father    = document.getElementById('f-father').value.trim();
-  const email     = document.getElementById('f-email').value.trim();
-  const phone     = document.getElementById('f-phone').value.trim();
+  const father = document.getElementById('f-father').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
 
   if (!name || !studentId)
     return showFormMsg('student-form-msg', '⚠ Name and Student ID are required.', 'error');
@@ -202,25 +202,25 @@ async function saveStudent() {
 async function editStudent(studentId) {
   const s = await dbGet('students', studentId); if (!s) return;
   document.getElementById('edit-original-id').value = s.studentId;
-  document.getElementById('ef-name').value   = s.name;
-  document.getElementById('ef-id').value     = s.studentId;
+  document.getElementById('ef-name').value = s.name;
+  document.getElementById('ef-id').value = s.studentId;
   document.getElementById('ef-father').value = s.father || '';
-  document.getElementById('ef-email').value  = s.email  || '';
-  document.getElementById('ef-phone').value  = s.phone  || '';
+  document.getElementById('ef-email').value = s.email || '';
+  document.getElementById('ef-phone').value = s.phone || '';
   editPhoto = s.photo || null;
   const img = document.getElementById('edit-photo-preview');
   if (s.photo) { img.src = s.photo; img.classList.remove('hidden'); document.getElementById('edit-photo-placeholder').classList.add('hidden'); }
-  else         { img.classList.add('hidden'); document.getElementById('edit-photo-placeholder').classList.remove('hidden'); }
+  else { img.classList.add('hidden'); document.getElementById('edit-photo-placeholder').classList.remove('hidden'); }
   showPage('page-edit-student');
 }
 
 async function updateStudent() {
-  const origId    = document.getElementById('edit-original-id').value;
-  const name      = document.getElementById('ef-name').value.trim();
+  const origId = document.getElementById('edit-original-id').value;
+  const name = document.getElementById('ef-name').value.trim();
   const studentId = document.getElementById('ef-id').value.trim();
-  const father    = document.getElementById('ef-father').value.trim();
-  const email     = document.getElementById('ef-email').value.trim();
-  const phone     = document.getElementById('ef-phone').value.trim();
+  const father = document.getElementById('ef-father').value.trim();
+  const email = document.getElementById('ef-email').value.trim();
+  const phone = document.getElementById('ef-phone').value.trim();
 
   if (!name || !studentId)
     return showFormMsg('edit-form-msg', '⚠ Name and Student ID are required.', 'error');
@@ -276,7 +276,7 @@ function renderStudents(list) {
   grid.innerHTML = list.map(s => `
     <div class="student-card" onclick="openProfile('${esc(s.studentId)}')">
       ${s.photo ? `<img class="student-card-photo" src="${s.photo}" alt="${esc(s.name)}"/>`
-                : `<div class="student-card-avatar">👤</div>`}
+      : `<div class="student-card-avatar">👤</div>`}
       <div class="student-card-name">${esc(s.name)}</div>
       <div class="student-card-id">${esc(s.studentId)}</div>
     </div>`).join('');
@@ -308,9 +308,9 @@ async function openProfile(studentId) {
       <div class="profile-id">${esc(s.studentId)}</div>
     </div>
     <div class="profile-fields">
-      <div class="pf-row"><label>Father Name</label><span>${esc(s.father||'—')}</span></div>
-      <div class="pf-row"><label>Email</label><span>${esc(s.email||'—')}</span></div>
-      <div class="pf-row"><label>Phone</label><span>${esc(s.phone||'—')}</span></div>
+      <div class="pf-row"><label>Father Name</label><span>${esc(s.father || '—')}</span></div>
+      <div class="pf-row"><label>Email</label><span>${esc(s.email || '—')}</span></div>
+      <div class="pf-row"><label>Phone</label><span>${esc(s.phone || '—')}</span></div>
       <div class="pf-row"><label>Registered</label><span>${new Date(s.createdAt).toLocaleDateString()}</span></div>
       <div class="pf-row"><label>Total Attendance</label><span style="color:var(--green)">${records.length} sessions</span></div>
     </div>
@@ -329,7 +329,7 @@ async function openProfile(studentId) {
 }
 
 function esc(str) {
-  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 /* ══════════════════════════════════════
@@ -339,9 +339,9 @@ async function updateDashStats() {
   const [students, sessions, attendance] = await Promise.all([
     dbGetAll('students'), dbGetAll('sessions'), dbGetAll('attendance')
   ]);
-  document.getElementById('qs-students').textContent  = students.length;
-  document.getElementById('qs-sessions').textContent  = sessions.length;
-  document.getElementById('qs-records').textContent   = attendance.length;
+  document.getElementById('qs-students').textContent = students.length;
+  document.getElementById('qs-sessions').textContent = sessions.length;
+  document.getElementById('qs-records').textContent = attendance.length;
 }
 
 /* ══════════════════════════════════════
@@ -371,7 +371,7 @@ function renderQRStudents(list) {
   grid.innerHTML = list.map(s => `
     <div class="student-card" onclick="viewQRCard('${esc(s.studentId)}')">
       ${s.photo ? `<img class="student-card-photo" src="${s.photo}" alt="${esc(s.name)}"/>`
-                : `<div class="student-card-avatar">👤</div>`}
+      : `<div class="student-card-avatar">👤</div>`}
       <div class="student-card-name">${esc(s.name)}</div>
       <div class="student-card-id">${esc(s.studentId)}</div>
     </div>`).join('');
@@ -416,7 +416,7 @@ function renderQRCardHTML(student) {
         colorDark: '#0a1628', colorLight: '#ffffff',
         correctLevel: QRCode.CorrectLevel.H
       });
-    } catch(e) { console.error('QR render error', e); }
+    } catch (e) { console.error('QR render error', e); }
   }, 50);
 }
 
@@ -435,15 +435,15 @@ function getQRDataURL(studentId) {
         if (img && img.src && img.src.startsWith('data:')) {
           clearInterval(poll);
           const url = img.src;
-          try { document.body.removeChild(tmp); } catch {}
+          try { document.body.removeChild(tmp); } catch { }
           resolve(url);
         } else if (tries > 60) {
           clearInterval(poll);
-          try { document.body.removeChild(tmp); } catch {}
+          try { document.body.removeChild(tmp); } catch { }
           resolve(null);
         }
       }, 50);
-    } catch { try { document.body.removeChild(tmp); } catch {} resolve(null); }
+    } catch { try { document.body.removeChild(tmp); } catch { } resolve(null); }
   });
 }
 
@@ -468,92 +468,92 @@ async function downloadQRPNG() {
   const ctx = cv.getContext('2d');
 
   ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H);
-  const g = ctx.createLinearGradient(0,0,W,90);
-  g.addColorStop(0,'#0a1628'); g.addColorStop(1,'#00c853');
-  ctx.fillStyle = g; ctx.fillRect(0,0,W,90);
+  const g = ctx.createLinearGradient(0, 0, W, 90);
+  g.addColorStop(0, '#0a1628'); g.addColorStop(1, '#00c853');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, 90);
   ctx.font = '38px serif'; ctx.textAlign = 'center';
-  ctx.fillText('🎓', W/2, 44);
+  ctx.fillText('🎓', W / 2, 44);
   ctx.fillStyle = '#fff'; ctx.font = 'bold 12px Arial';
-  ctx.fillText('UNIVERSITY ATTENDANCE CARD', W/2, 70);
+  ctx.fillText('UNIVERSITY ATTENDANCE CARD', W / 2, 70);
 
   // Photo circle
-  const ps = 76, px = (W-ps)/2, py = 102, cx = W/2, cy = py+ps/2;
-  ctx.beginPath(); ctx.arc(cx,cy,ps/2+4,0,Math.PI*2); ctx.fillStyle='#00c853'; ctx.fill();
-  ctx.save(); ctx.beginPath(); ctx.arc(cx,cy,ps/2,0,Math.PI*2); ctx.clip();
+  const ps = 76, px = (W - ps) / 2, py = 102, cx = W / 2, cy = py + ps / 2;
+  ctx.beginPath(); ctx.arc(cx, cy, ps / 2 + 4, 0, Math.PI * 2); ctx.fillStyle = '#00c853'; ctx.fill();
+  ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, ps / 2, 0, Math.PI * 2); ctx.clip();
   if (currentQRStudent.photo) {
-    try { const pi = await loadImg(currentQRStudent.photo); ctx.drawImage(pi,px,py,ps,ps); }
-    catch { ctx.fillStyle='#e8f5e9'; ctx.fillRect(px,py,ps,ps); }
-  } else { ctx.fillStyle='#e8f5e9'; ctx.fillRect(px,py,ps,ps); ctx.fillStyle='#aaa'; ctx.font='36px serif'; ctx.fillText('👤',W/2,cy+12); }
+    try { const pi = await loadImg(currentQRStudent.photo); ctx.drawImage(pi, px, py, ps, ps); }
+    catch { ctx.fillStyle = '#e8f5e9'; ctx.fillRect(px, py, ps, ps); }
+  } else { ctx.fillStyle = '#e8f5e9'; ctx.fillRect(px, py, ps, ps); ctx.fillStyle = '#aaa'; ctx.font = '36px serif'; ctx.fillText('👤', W / 2, cy + 12); }
   ctx.restore();
 
   // Name badge
-  const ny = py+ps+18;
-  ctx.fillStyle='#0a1628'; ctx.beginPath();
-  if (ctx.roundRect) ctx.roundRect(24,ny,W-48,38,19); else ctx.rect(24,ny,W-48,38);
+  const ny = py + ps + 18;
+  ctx.fillStyle = '#0a1628'; ctx.beginPath();
+  if (ctx.roundRect) ctx.roundRect(24, ny, W - 48, 38, 19); else ctx.rect(24, ny, W - 48, 38);
   ctx.fill();
-  ctx.fillStyle='#fff'; ctx.font='bold 17px Arial'; ctx.textAlign='center';
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 17px Arial'; ctx.textAlign = 'center';
   let dn = currentQRStudent.name;
-  while (ctx.measureText(dn).width > W-80 && dn.length > 3) dn = dn.slice(0,-1);
+  while (ctx.measureText(dn).width > W - 80 && dn.length > 3) dn = dn.slice(0, -1);
   if (dn !== currentQRStudent.name) dn += '…';
-  ctx.fillText(dn, W/2, ny+25);
-  ctx.fillStyle='#00c853'; ctx.font='bold 13px Arial';
-  ctx.fillText(currentQRStudent.studentId, W/2, ny+54);
+  ctx.fillText(dn, W / 2, ny + 25);
+  ctx.fillStyle = '#00c853'; ctx.font = 'bold 13px Arial';
+  ctx.fillText(currentQRStudent.studentId, W / 2, ny + 54);
 
   // QR
   try {
     const qi = await loadImg(qrUrl);
-    const qs=170, qx=(W-qs)/2, qy=ny+66;
-    ctx.fillStyle='#fff'; ctx.strokeStyle='#ddd'; ctx.lineWidth=2;
+    const qs = 170, qx = (W - qs) / 2, qy = ny + 66;
+    ctx.fillStyle = '#fff'; ctx.strokeStyle = '#ddd'; ctx.lineWidth = 2;
     ctx.beginPath();
-    if (ctx.roundRect) ctx.roundRect(qx-10,qy-10,qs+20,qs+20,10); else ctx.rect(qx-10,qy-10,qs+20,qs+20);
+    if (ctx.roundRect) ctx.roundRect(qx - 10, qy - 10, qs + 20, qs + 20, 10); else ctx.rect(qx - 10, qy - 10, qs + 20, qs + 20);
     ctx.fill(); ctx.stroke();
-    ctx.drawImage(qi,qx,qy,qs,qs);
-  } catch(e) { console.error('QR draw error',e); }
+    ctx.drawImage(qi, qx, qy, qs, qs);
+  } catch (e) { console.error('QR draw error', e); }
 
-  ctx.fillStyle='#f5f5f5'; ctx.fillRect(0,H-36,W,36);
-  ctx.fillStyle='#999'; ctx.font='11px Arial';
-  ctx.fillText('SCAN TO MARK ATTENDANCE • '+new Date().getFullYear(), W/2, H-15);
+  ctx.fillStyle = '#f5f5f5'; ctx.fillRect(0, H - 36, W, 36);
+  ctx.fillStyle = '#999'; ctx.font = '11px Arial';
+  ctx.fillText('SCAN TO MARK ATTENDANCE • ' + new Date().getFullYear(), W / 2, H - 15);
 
   const a = document.createElement('a');
-  a.download = `QR_${currentQRStudent.studentId}_${currentQRStudent.name.replace(/\s+/g,'_')}.png`;
+  a.download = `QR_${currentQRStudent.studentId}_${currentQRStudent.name.replace(/\s+/g, '_')}.png`;
   a.href = cv.toDataURL('image/png');
   a.click();
   showToast('PNG downloaded!', 'success');
 }
 
 async function downloadQRPDF() {
-  if (!currentQRStudent || !window.jspdf) return showToast('PDF library not loaded','error');
+  if (!currentQRStudent || !window.jspdf) return showToast('PDF library not loaded', 'error');
   showToast('Generating PDF...');
   const qrUrl = await getQRDataURL(currentQRStudent.studentId);
-  if (!qrUrl) return showToast('QR generation failed','error');
-  const {jsPDF} = window.jspdf;
-  const doc = new jsPDF({unit:'mm',format:[86,124]});
-  doc.setFillColor(10,22,40); doc.rect(0,0,86,28,'F');
-  doc.setTextColor(255,255,255); doc.setFontSize(8); doc.setFont(undefined,'bold');
-  doc.text('UNIVERSITY ATTENDANCE CARD',43,14,{align:'center'});
+  if (!qrUrl) return showToast('QR generation failed', 'error');
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: [86, 124] });
+  doc.setFillColor(10, 22, 40); doc.rect(0, 0, 86, 28, 'F');
+  doc.setTextColor(255, 255, 255); doc.setFontSize(8); doc.setFont(undefined, 'bold');
+  doc.text('UNIVERSITY ATTENDANCE CARD', 43, 14, { align: 'center' });
   let yo = 32;
   if (currentQRStudent.photo) {
-    try { doc.addImage(currentQRStudent.photo,'JPEG',31,30,24,24,undefined,'FAST'); yo=58; } catch {}
+    try { doc.addImage(currentQRStudent.photo, 'JPEG', 31, 30, 24, 24, undefined, 'FAST'); yo = 58; } catch { }
   }
-  doc.setFillColor(10,22,40);
-  doc.roundedRect(8,yo,70,10,2,2,'F');
-  doc.setTextColor(255,255,255); doc.setFontSize(8);
-  let dn = currentQRStudent.name; if (dn.length>24) dn=dn.slice(0,23)+'…';
-  doc.text(dn,43,yo+7,{align:'center'});
-  doc.setTextColor(0,200,83); doc.setFontSize(7);
-  doc.text(currentQRStudent.studentId,43,yo+16,{align:'center'});
-  doc.addImage(qrUrl,'PNG',18,yo+20,50,50);
-  doc.setFillColor(245,245,245); doc.rect(0,114,86,10,'F');
-  doc.setTextColor(153,153,153); doc.setFontSize(5);
-  doc.text('SCAN TO MARK ATTENDANCE',43,120,{align:'center'});
+  doc.setFillColor(10, 22, 40);
+  doc.roundedRect(8, yo, 70, 10, 2, 2, 'F');
+  doc.setTextColor(255, 255, 255); doc.setFontSize(8);
+  let dn = currentQRStudent.name; if (dn.length > 24) dn = dn.slice(0, 23) + '…';
+  doc.text(dn, 43, yo + 7, { align: 'center' });
+  doc.setTextColor(0, 200, 83); doc.setFontSize(7);
+  doc.text(currentQRStudent.studentId, 43, yo + 16, { align: 'center' });
+  doc.addImage(qrUrl, 'PNG', 18, yo + 20, 50, 50);
+  doc.setFillColor(245, 245, 245); doc.rect(0, 114, 86, 10, 'F');
+  doc.setTextColor(153, 153, 153); doc.setFontSize(5);
+  doc.text('SCAN TO MARK ATTENDANCE', 43, 120, { align: 'center' });
   doc.save(`QR_${currentQRStudent.studentId}.pdf`);
-  showToast('PDF downloaded!','success');
+  showToast('PDF downloaded!', 'success');
 }
 
 function printQRCard() {
   const card = document.getElementById('qr-card-el');
   if (!card) return;
-  const win = window.open('','_blank');
+  const win = window.open('', '_blank');
   win.document.write(`<!DOCTYPE html><html><head><title>QR Card</title>
   <style>body{margin:0;display:flex;align-items:center;justify-content:center;height:100vh;background:#fff;}
   @media print{body{height:auto;}}
@@ -579,20 +579,20 @@ async function downloadStudentQRPNG(studentId) {
 }
 
 async function downloadAllQRZip() {
-  if (!window.JSZip) return showToast('ZIP library not loaded','error');
+  if (!window.JSZip) return showToast('ZIP library not loaded', 'error');
   const students = await dbGetAll('students');
-  if (!students.length) return showToast('No students found','error');
+  if (!students.length) return showToast('No students found', 'error');
   showToast('Generating ZIP...');
   const zip = new JSZip();
   for (const s of students) {
     const url = await getQRDataURL(s.studentId);
-    if (url) zip.file(`QR_${s.studentId}_${s.name.replace(/\s+/g,'_')}.png`, url.split(',')[1], {base64:true});
+    if (url) zip.file(`QR_${s.studentId}_${s.name.replace(/\s+/g, '_')}.png`, url.split(',')[1], { base64: true });
   }
-  const blob = await zip.generateAsync({type:'blob'});
+  const blob = await zip.generateAsync({ type: 'blob' });
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob); a.download='All_QR_Codes.zip'; a.click();
+  a.href = URL.createObjectURL(blob); a.download = 'All_QR_Codes.zip'; a.click();
   URL.revokeObjectURL(a.href);
-  showToast('ZIP downloaded!','success');
+  showToast('ZIP downloaded!', 'success');
 }
 
 /* ══════════════════════════════════════
@@ -605,14 +605,14 @@ function initAudio() {
 function beep() {
   try {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc  = audioCtx.createOscillator();
+    const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.connect(gain); gain.connect(audioCtx.destination);
     osc.type = 'square'; osc.frequency.setValueAtTime(880, audioCtx.currentTime);
     gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.18);
     osc.start(audioCtx.currentTime); osc.stop(audioCtx.currentTime + 0.18);
-  } catch {}
+  } catch { }
 }
 function vibrate(pattern) {
   if (navigator.vibrate) navigator.vibrate(pattern);
@@ -621,10 +621,10 @@ function vibrate(pattern) {
 /* ══════════════════════════════════════
    ATTENDANCE SESSION
 ══════════════════════════════════════ */
-let currentSession   = null;
+let currentSession = null;
 let sessionMarkedSet = new Set();
-let scanAF  = null;
-let stream  = null;
+let scanAF = null;
+let stream = null;
 let scanning = false;    // pause scanning while popup is open
 let lastCode = '';
 let lastCodeTime = 0;
@@ -635,10 +635,10 @@ let lastEndedSessionId = null;
 async function startAttendanceSession() {
   const lecture = document.getElementById('att-lecture').value.trim();
   const teacher = document.getElementById('att-teacher').value.trim();
-  const venue   = document.getElementById('att-venue').value.trim();
+  const venue = document.getElementById('att-venue').value.trim();
 
   if (!lecture || !teacher || !venue)
-    return showFormMsg('att-form-msg','⚠ All fields are required.','error');
+    return showFormMsg('att-form-msg', '⚠ All fields are required.', 'error');
 
   const sessionId = Date.now();
   currentSession = {
@@ -653,12 +653,12 @@ async function startAttendanceSession() {
 
   document.getElementById('scan-lecture').textContent = lecture;
   document.getElementById('scan-teacher').textContent = teacher;
-  document.getElementById('scan-venue').textContent   = venue;
-  document.getElementById('cnt-scanned').textContent  = '0';
-  document.getElementById('cnt-present').textContent  = '0';
+  document.getElementById('scan-venue').textContent = venue;
+  document.getElementById('cnt-scanned').textContent = '0';
+  document.getElementById('cnt-present').textContent = '0';
   document.getElementById('scan-popup').classList.add('hidden');
 
-  ['att-lecture','att-teacher','att-venue'].forEach(id => document.getElementById(id).value = '');
+  ['att-lecture', 'att-teacher', 'att-venue'].forEach(id => document.getElementById(id).value = '');
   showPage('page-scanner');
 
   // Init audio on user gesture
@@ -672,16 +672,16 @@ async function startCamera() {
     stream = await navigator.mediaDevices.getUserMedia({
       video: {
         facingMode: { ideal: 'environment' },
-        width:  { ideal: 1920 },
+        width: { ideal: 1920 },
         height: { ideal: 1080 }
       },
       audio: false
     });
     video.srcObject = stream;
-    await video.play().catch(() => {});
+    await video.play().catch(() => { });
     scanning = true;
     scanLoop();
-  } catch(err) {
+  } catch (err) {
     showToast('Camera error: ' + err.message, 'error');
   }
 }
@@ -695,22 +695,23 @@ function stopCamera() {
 }
 
 function scanLoop() {
-  const video  = document.getElementById('qr-video');
+  const video = document.getElementById('qr-video');
   const canvas = document.getElementById('scan-canvas');
-  const ctx    = canvas.getContext('2d', { willReadFrequently: true });
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
   const tick = () => {
     if (!stream || !scanning) return;
     if (video.readyState >= 2 && video.videoWidth > 0) {
       const vw = video.videoWidth, vh = video.videoHeight;
       // Scan center crop for speed (80% of frame)
-      const cropW = Math.floor(vw * 0.8), cropH = Math.floor(vh * 0.8);
-      const cropX = Math.floor((vw - cropW) / 2), cropY = Math.floor((vh - cropH) / 2);
-      canvas.width = cropW; canvas.height = cropH;
-      ctx.drawImage(video, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
-      const imgData = ctx.getImageData(0, 0, cropW, cropH);
+      canvas.width = vw;
+      canvas.height = vh;
+
+      ctx.drawImage(video, 0, 0, vw, vh);
+
+      const imgData = ctx.getImageData(0, 0, vw, vh);
       const code = jsQR(imgData.data, imgData.width, imgData.height, {
-        inversionAttempts: 'attemptBoth'  // better detection at distance
+       inversionAttempts: 'dontInvert'  // better detection at distance
       });
       if (code && code.data) {
         const now = Date.now();
@@ -736,7 +737,7 @@ async function onQRDetected(qrData) {
   vibrate([80]);
 
   const student = await dbGet('students', qrData);
-  const popup   = document.getElementById('scan-popup');
+  const popup = document.getElementById('scan-popup');
 
   // Reset popup state
   document.getElementById('popup-confirm-btn').classList.remove('hidden');
@@ -748,7 +749,7 @@ async function onQRDetected(qrData) {
     vibrate([100, 60, 100]);
     document.getElementById('popup-photo').src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"><circle cx="40" cy="40" r="40" fill="%23ff3d57"/><text x="40" y="56" font-size="40" text-anchor="middle" fill="white">?</text></svg>';
     document.getElementById('popup-name').textContent = 'Unknown QR Code';
-    document.getElementById('popup-id').textContent   = qrData;
+    document.getElementById('popup-id').textContent = qrData;
     document.getElementById('popup-confirm-btn').classList.add('hidden');
     document.getElementById('popup-notfound').classList.remove('hidden');
     popup.classList.remove('hidden');
@@ -759,7 +760,7 @@ async function onQRDetected(qrData) {
   const photoEl = document.getElementById('popup-photo');
   photoEl.src = student.photo || 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"><circle cx="40" cy="40" r="40" fill="%23142445"/><text x="40" y="56" font-size="40" text-anchor="middle" fill="%2300c853">👤</text></svg>';
   document.getElementById('popup-name').textContent = student.name;
-  document.getElementById('popup-id').textContent   = student.studentId;
+  document.getElementById('popup-id').textContent = student.studentId;
 
   if (sessionMarkedSet.has(student.studentId)) {
     vibrate([60, 40, 60]);
@@ -782,15 +783,15 @@ async function confirmAttendance() {
   document.getElementById('cnt-present').textContent = presentCount;
 
   await dbAdd('attendance', {
-    sessionId:   currentSession.sessionId,
-    studentId:   student.studentId,
+    sessionId: currentSession.sessionId,
+    studentId: student.studentId,
     studentName: student.name,
-    date:        new Date().toLocaleDateString('en-PK'),
-    time:        new Date().toLocaleTimeString('en-PK'),
-    lecture:     currentSession.lecture,
-    venue:       currentSession.venue,
-    teacher:     currentSession.teacher,
-    markedAt:    new Date().toISOString()
+    date: new Date().toLocaleDateString('en-PK'),
+    time: new Date().toLocaleTimeString('en-PK'),
+    lecture: currentSession.lecture,
+    venue: currentSession.venue,
+    teacher: currentSession.teacher,
+    markedAt: new Date().toISOString()
   });
 
   beep();
@@ -815,7 +816,7 @@ async function endAttendanceSession() {
       stopCamera();
       const sess = {
         ...currentSession,
-        endedAt:      new Date().toISOString(),
+        endedAt: new Date().toISOString(),
         totalPresent: presentCount,
         totalScanned: scannedCount
       };
@@ -876,7 +877,7 @@ async function loadSessions() {
 
 async function openSessionDetail(sessionId) {
   const sessions = await dbGetAll('sessions');
-  const session  = sessions.find(s => s.sessionId === sessionId);
+  const session = sessions.find(s => s.sessionId === sessionId);
   if (!session) return;
   const records = await dbIdx('attendance', 'sessionId', sessionId);
 
@@ -894,7 +895,7 @@ async function openSessionDetail(sessionId) {
       <div class="sm-item"><label>Date</label><span>${session.date}</span></div>
       <div class="sm-item"><label>Time</label><span>${session.time}</span></div>
       <div class="sm-item"><label>Present</label><span style="color:var(--green)">${session.totalPresent}</span></div>
-      <div class="sm-item"><label>Total Scanned</label><span>${session.totalScanned||session.totalPresent}</span></div>
+      <div class="sm-item"><label>Total Scanned</label><span>${session.totalScanned || session.totalPresent}</span></div>
     </div>
     <div style="padding:0 12px 8px;display:flex;gap:8px;">
       <button class="btn-primary" style="flex:1;font-size:13px;" onclick="exportSessionCSV(${sessionId})">📄 Export CSV</button>
@@ -918,7 +919,7 @@ function toggleExportOptions() {
 
 async function loadSessionsForExport() {
   const sessions = await dbGetAll('sessions');
-  sessions.sort((a,b) => b.sessionId - a.sessionId);
+  sessions.sort((a, b) => b.sessionId - a.sessionId);
   const sel = document.getElementById('exp-session-id');
   sel.innerHTML = sessions.map(s => `<option value="${s.sessionId}">${s.date} — ${esc(s.lecture)}</option>`).join('');
 }
@@ -931,7 +932,7 @@ async function getFilteredAttendance() {
     records = records.filter(r => r.sessionId === sid);
   } else if (type === 'daterange') {
     const from = document.getElementById('exp-date-from').value;
-    const to   = document.getElementById('exp-date-to').value;
+    const to = document.getElementById('exp-date-to').value;
     if (from && to) {
       const fd = new Date(from), td = new Date(to + 'T23:59:59');
       records = records.filter(r => { const d = new Date(r.markedAt); return d >= fd && d <= td; });
@@ -942,82 +943,82 @@ async function getFilteredAttendance() {
 
 async function exportAttendanceCSV() {
   const records = await getFilteredAttendance();
-  if (!records.length) return showFormMsg('exp-att-msg','No records found.','error');
-  const hdrs = ['Student ID','Student Name','Date','Time','Lecture','Venue','Teacher'];
-  const rows = records.map(r => [r.studentId,r.studentName,r.date,r.time,r.lecture,r.venue,r.teacher].map(csvQ));
-  dlCSV([hdrs,...rows],'Attendance_Export.csv');
-  showToast('CSV exported!','success');
+  if (!records.length) return showFormMsg('exp-att-msg', 'No records found.', 'error');
+  const hdrs = ['Student ID', 'Student Name', 'Date', 'Time', 'Lecture', 'Venue', 'Teacher'];
+  const rows = records.map(r => [r.studentId, r.studentName, r.date, r.time, r.lecture, r.venue, r.teacher].map(csvQ));
+  dlCSV([hdrs, ...rows], 'Attendance_Export.csv');
+  showToast('CSV exported!', 'success');
 }
 async function exportAttendanceExcel() {
   const records = await getFilteredAttendance();
-  if (!records.length) return showFormMsg('exp-att-msg','No records found.','error');
-  const hdrs = ['Student ID','Student Name','Date','Time','Lecture','Venue','Teacher'];
-  const rows = records.map(r => [r.studentId,r.studentName,r.date,r.time,r.lecture,r.venue,r.teacher]);
-  dlXLS([hdrs,...rows],'Attendance_Export.xls','Attendance');
-  showToast('Excel exported!','success');
+  if (!records.length) return showFormMsg('exp-att-msg', 'No records found.', 'error');
+  const hdrs = ['Student ID', 'Student Name', 'Date', 'Time', 'Lecture', 'Venue', 'Teacher'];
+  const rows = records.map(r => [r.studentId, r.studentName, r.date, r.time, r.lecture, r.venue, r.teacher]);
+  dlXLS([hdrs, ...rows], 'Attendance_Export.xls', 'Attendance');
+  showToast('Excel exported!', 'success');
 }
 
 async function exportStudentsCSV() {
   const students = await dbGetAll('students');
-  if (!students.length) return showToast('No students','error');
-  const hdrs = ['Student Name','Student ID','Father Name','Email','Phone'];
-  const rows = students.map(s => [s.name,s.studentId,s.father||'',s.email||'',s.phone||''].map(csvQ));
-  dlCSV([hdrs,...rows],'Students_Export.csv');
-  showToast('CSV exported!','success');
+  if (!students.length) return showToast('No students', 'error');
+  const hdrs = ['Student Name', 'Student ID', 'Father Name', 'Email', 'Phone'];
+  const rows = students.map(s => [s.name, s.studentId, s.father || '', s.email || '', s.phone || ''].map(csvQ));
+  dlCSV([hdrs, ...rows], 'Students_Export.csv');
+  showToast('CSV exported!', 'success');
 }
 async function exportStudentsExcel() {
   const students = await dbGetAll('students');
-  if (!students.length) return showToast('No students','error');
-  const hdrs = ['Student Name','Student ID','Father Name','Email','Phone'];
-  const rows = students.map(s => [s.name,s.studentId,s.father||'',s.email||'',s.phone||'']);
-  dlXLS([hdrs,...rows],'Students_Export.xls','Students');
-  showToast('Excel exported!','success');
+  if (!students.length) return showToast('No students', 'error');
+  const hdrs = ['Student Name', 'Student ID', 'Father Name', 'Email', 'Phone'];
+  const rows = students.map(s => [s.name, s.studentId, s.father || '', s.email || '', s.phone || '']);
+  dlXLS([hdrs, ...rows], 'Students_Export.xls', 'Students');
+  showToast('Excel exported!', 'success');
 }
 
 async function exportSessionCSV(sessionId) {
-  const records = await dbIdx('attendance','sessionId',sessionId);
-  if (!records.length) return showToast('No records','error');
-  const hdrs = ['Student ID','Student Name','Date','Time','Lecture','Venue','Teacher'];
-  const rows = records.map(r => [r.studentId,r.studentName,r.date,r.time,r.lecture,r.venue,r.teacher].map(csvQ));
-  dlCSV([hdrs,...rows],`Session_${sessionId}.csv`);
-  showToast('CSV exported!','success');
+  const records = await dbIdx('attendance', 'sessionId', sessionId);
+  if (!records.length) return showToast('No records', 'error');
+  const hdrs = ['Student ID', 'Student Name', 'Date', 'Time', 'Lecture', 'Venue', 'Teacher'];
+  const rows = records.map(r => [r.studentId, r.studentName, r.date, r.time, r.lecture, r.venue, r.teacher].map(csvQ));
+  dlCSV([hdrs, ...rows], `Session_${sessionId}.csv`);
+  showToast('CSV exported!', 'success');
 }
 async function exportSessionExcel(sessionId) {
-  const records = await dbIdx('attendance','sessionId',sessionId);
-  if (!records.length) return showToast('No records','error');
-  const hdrs = ['Student ID','Student Name','Date','Time','Lecture','Venue','Teacher'];
-  const rows = records.map(r => [r.studentId,r.studentName,r.date,r.time,r.lecture,r.venue,r.teacher]);
-  dlXLS([hdrs,...rows],`Session_${sessionId}.xls`,`Session`);
-  showToast('Excel exported!','success');
+  const records = await dbIdx('attendance', 'sessionId', sessionId);
+  if (!records.length) return showToast('No records', 'error');
+  const hdrs = ['Student ID', 'Student Name', 'Date', 'Time', 'Lecture', 'Venue', 'Teacher'];
+  const rows = records.map(r => [r.studentId, r.studentName, r.date, r.time, r.lecture, r.venue, r.teacher]);
+  dlXLS([hdrs, ...rows], `Session_${sessionId}.xls`, `Session`);
+  showToast('Excel exported!', 'success');
 }
 
 function csvQ(v) {
-  const s = String(v||'');
-  return (s.includes(',') || s.includes('"') || s.includes('\n')) ? `"${s.replace(/"/g,'""')}"` : s;
+  const s = String(v || '');
+  return (s.includes(',') || s.includes('"') || s.includes('\n')) ? `"${s.replace(/"/g, '""')}"` : s;
 }
 function dlCSV(rows, name) {
-  const blob = new Blob(['\uFEFF'+rows.map(r=>r.join(',')).join('\n')],{type:'text/csv;charset=utf-8;'});
+  const blob = new Blob(['\uFEFF' + rows.map(r => r.join(',')).join('\n')], { type: 'text/csv;charset=utf-8;' });
   dlBlob(blob, name);
 }
-function dlXLS(rows, name, sheet='Sheet1') {
+function dlXLS(rows, name, sheet = 'Sheet1') {
   const xml = `<?xml version="1.0"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"><Worksheet ss:Name="${sheet}"><Table>
-${rows.map((r,i)=>`<Row>${r.map(c=>`<Cell${i===0?' ss:StyleID="h"':''}>
-<Data ss:Type="String">${String(c||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</Data></Cell>`).join('')}</Row>`).join('')}
+${rows.map((r, i) => `<Row>${r.map(c => `<Cell${i === 0 ? ' ss:StyleID="h"' : ''}>
+<Data ss:Type="String">${String(c || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</Data></Cell>`).join('')}</Row>`).join('')}
 </Table></Worksheet></Workbook>`;
-  dlBlob(new Blob([xml],{type:'application/vnd.ms-excel'}), name);
+  dlBlob(new Blob([xml], { type: 'application/vnd.ms-excel' }), name);
 }
 function dlBlob(blob, name) {
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob); a.download = name; a.click();
-  setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
 
 /* ══════════════════════════════════════
    STATS
 ══════════════════════════════════════ */
 async function loadStats() {
-  const [students,sessions,attendance] = await Promise.all([
+  const [students, sessions, attendance] = await Promise.all([
     dbGetAll('students'), dbGetAll('sessions'), dbGetAll('attendance')
   ]);
   document.getElementById('stats-content').innerHTML = `
@@ -1033,16 +1034,16 @@ async function loadStats() {
    BACKUP & RESTORE
 ══════════════════════════════════════ */
 async function backupData() {
-  const [students,sessions,attendance] = await Promise.all([
+  const [students, sessions, attendance] = await Promise.all([
     dbGetAll('students'), dbGetAll('sessions'), dbGetAll('attendance')
   ]);
-  const blob = new Blob([JSON.stringify({version:2,exportedAt:new Date().toISOString(),students,sessions,attendance},null,2)],
-    {type:'application/json'});
+  const blob = new Blob([JSON.stringify({ version: 2, exportedAt: new Date().toISOString(), students, sessions, attendance }, null, 2)],
+    { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `QR_Backup_${new Date().toISOString().slice(0,10)}.json`;
+  a.download = `QR_Backup_${new Date().toISOString().slice(0, 10)}.json`;
   a.click();
-  showToast('Backup downloaded!','success');
+  showToast('Backup downloaded!', 'success');
 }
 
 async function restoreData(e) {
@@ -1051,14 +1052,14 @@ async function restoreData(e) {
   try {
     const bk = JSON.parse(text);
     if (!bk.students) throw new Error('Invalid backup file');
-    let sc=0;
-    for (const s of (bk.students||[])) { await dbPut('students',s); sc++; }
-    for (const s of (bk.sessions||[])) await dbPut('sessions',s);
-    for (const r of (bk.attendance||[])) { try { await dbAdd('attendance',r); } catch {} }
-    showFormMsg('restore-msg',`✓ Restored ${sc} students & ${bk.sessions?.length||0} sessions.`,'success');
+    let sc = 0;
+    for (const s of (bk.students || [])) { await dbPut('students', s); sc++; }
+    for (const s of (bk.sessions || [])) await dbPut('sessions', s);
+    for (const r of (bk.attendance || [])) { try { await dbAdd('attendance', r); } catch { } }
+    showFormMsg('restore-msg', `✓ Restored ${sc} students & ${bk.sessions?.length || 0} sessions.`, 'success');
     updateDashStats();
-  } catch(err) {
-    showFormMsg('restore-msg','✗ Invalid backup: '+err.message,'error');
+  } catch (err) {
+    showFormMsg('restore-msg', '✗ Invalid backup: ' + err.message, 'error');
   }
   e.target.value = '';
 }
