@@ -2,41 +2,40 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
 <meta name="theme-color" content="#00c853"/>
+<meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="QR Attend"/>
 <title>QR Attendance System</title>
 <link rel="manifest" href="manifest.json"/>
-<link rel="stylesheet" href="styles.css"/>
+<link rel="apple-touch-icon" href="icon-192.png"/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
-
-<!-- APP SHELL -->
 <div id="app">
 
-  <!-- TOP NAV BAR -->
+  <!-- TOPBAR -->
   <header id="topbar">
     <button id="back-btn" class="icon-btn hidden" onclick="goBack()">&#8592;</button>
     <div id="topbar-title">QR Attendance</div>
     <div class="topbar-right">
-      <span id="install-btn-wrap" class="hidden">
-        <button class="icon-btn" id="install-btn" title="Install App">&#8595;</button>
-      </span>
+      <button class="icon-btn hidden" id="install-btn" title="Install App">&#8659;</button>
     </div>
   </header>
 
-  <!-- PAGES CONTAINER -->
+  <!-- PAGES -->
   <main id="pages">
 
-    <!-- DASHBOARD PAGE -->
+    <!-- ════ DASHBOARD ════ -->
     <div id="page-dashboard" class="page active">
       <div class="hero-banner">
         <div class="hero-icon">🎓</div>
         <h1 class="hero-title">QR Attendance</h1>
         <p class="hero-sub">University Attendance Management</p>
-        <div id="dash-stats" class="dash-quick-stats">
+        <div class="dash-quick-stats">
           <div class="qs-item"><span id="qs-students">0</span><small>Students</small></div>
           <div class="qs-item"><span id="qs-sessions">0</span><small>Sessions</small></div>
           <div class="qs-item"><span id="qs-records">0</span><small>Records</small></div>
@@ -76,15 +75,13 @@
       </div>
     </div>
 
-    <!-- ADD STUDENT PAGE -->
+    <!-- ════ ADD STUDENT ════ -->
     <div id="page-add-student" class="page">
       <div class="page-header"><h2>Add New Student</h2></div>
       <div class="form-card">
         <div class="photo-upload-area" onclick="document.getElementById('student-photo').click()">
-          <div id="photo-preview-wrap">
-            <div id="photo-placeholder">📷<br/><small>Tap to upload photo</small></div>
-            <img id="photo-preview" class="hidden" alt="Student Photo"/>
-          </div>
+          <img id="photo-preview" class="hidden" alt="Photo"/>
+          <div id="photo-placeholder">📷<br/><small>Tap to upload photo</small></div>
           <input type="file" id="student-photo" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)"/>
         </div>
         <div class="form-group">
@@ -109,13 +106,13 @@
         </div>
         <div class="form-actions">
           <button class="btn-primary" onclick="saveStudent()">💾 Save Student</button>
-          <button class="btn-secondary" onclick="resetStudentForm()">🔄 Reset Form</button>
+          <button class="btn-secondary" onclick="resetStudentForm()">🔄 Reset</button>
         </div>
         <div id="student-form-msg" class="form-msg hidden"></div>
       </div>
     </div>
 
-    <!-- STUDENTS LIST PAGE -->
+    <!-- ════ STUDENTS LIST ════ -->
     <div id="page-students" class="page">
       <div class="page-header"><h2>Students List</h2></div>
       <div class="search-bar">
@@ -125,20 +122,18 @@
       <div id="students-grid" class="students-grid"></div>
     </div>
 
-    <!-- STUDENT PROFILE PAGE -->
+    <!-- ════ STUDENT PROFILE ════ -->
     <div id="page-profile" class="page">
       <div id="profile-content"></div>
     </div>
 
-    <!-- EDIT STUDENT PAGE -->
+    <!-- ════ EDIT STUDENT ════ -->
     <div id="page-edit-student" class="page">
       <div class="page-header"><h2>Edit Student</h2></div>
       <div class="form-card">
         <div class="photo-upload-area" onclick="document.getElementById('edit-student-photo').click()">
-          <div id="edit-photo-preview-wrap">
-            <div id="edit-photo-placeholder">📷<br/><small>Tap to change photo</small></div>
-            <img id="edit-photo-preview" class="hidden" alt="Student Photo"/>
-          </div>
+          <img id="edit-photo-preview" class="hidden" alt="Photo"/>
+          <div id="edit-photo-placeholder">📷<br/><small>Tap to change photo</small></div>
           <input type="file" id="edit-student-photo" accept="image/*" class="hidden" onchange="handleEditPhotoUpload(event)"/>
         </div>
         <input type="hidden" id="edit-original-id"/>
@@ -163,37 +158,37 @@
           <input type="tel" id="ef-phone" placeholder="+92-xxx-xxxxxxx"/>
         </div>
         <div class="form-actions">
-          <button class="btn-primary" onclick="updateStudent()">💾 Update Student</button>
+          <button class="btn-primary" onclick="updateStudent()">💾 Update</button>
           <button class="btn-secondary" onclick="goBack()">✕ Cancel</button>
         </div>
         <div id="edit-form-msg" class="form-msg hidden"></div>
       </div>
     </div>
 
-    <!-- GENERATE QR PAGE -->
+    <!-- ════ GENERATE QR ════ -->
     <div id="page-generate-qr" class="page">
       <div class="page-header"><h2>Generate QR Codes</h2></div>
       <div class="search-bar">
         <input type="text" id="qr-search" placeholder="🔍 Search student..." oninput="filterQRStudents()"/>
       </div>
-      <div class="form-actions" style="margin:0 16px 12px;">
-        <button class="btn-accent" onclick="downloadAllQRZip()">📦 Download All QR (ZIP)</button>
+      <div style="padding:10px 14px 4px;">
+        <button class="btn-accent full-w" onclick="downloadAllQRZip()">📦 Download All QR (ZIP)</button>
       </div>
       <div id="qr-students-grid" class="students-grid"></div>
     </div>
 
-    <!-- QR VIEW PAGE -->
+    <!-- ════ QR CARD VIEW ════ -->
     <div id="page-qr-view" class="page">
       <div class="page-header"><h2>QR Card</h2></div>
       <div id="qr-card-container"></div>
-      <div class="form-actions" style="padding:16px;">
+      <div class="form-actions" style="padding:0 16px 20px;">
         <button class="btn-primary" onclick="downloadQRPNG()">⬇ Download PNG</button>
-        <button class="btn-secondary" onclick="downloadQRPDF()">📄 Download PDF</button>
+        <button class="btn-secondary" onclick="downloadQRPDF()">📄 PDF</button>
         <button class="btn-secondary" onclick="printQRCard()">🖨 Print</button>
       </div>
     </div>
 
-    <!-- START ATTENDANCE PAGE -->
+    <!-- ════ START ATTENDANCE ════ -->
     <div id="page-start-attendance" class="page">
       <div class="page-header"><h2>Start Attendance</h2></div>
       <div class="form-card">
@@ -210,76 +205,88 @@
           <input type="text" id="att-venue" placeholder="e.g. Room 101" autocomplete="off"/>
         </div>
         <div class="form-actions">
-          <button class="btn-accent" onclick="startAttendanceSession()">📷 Start Attendance</button>
-          <button class="btn-secondary" onclick="goBack()">✕ Cancel</button>
+          <button class="btn-accent full-w" onclick="startAttendanceSession()">📷 Start Attendance</button>
         </div>
         <div id="att-form-msg" class="form-msg hidden"></div>
       </div>
     </div>
 
-    <!-- SCANNER PAGE -->
+    <!-- ════ SCANNER PAGE ════ -->
     <div id="page-scanner" class="page scanner-page">
       <div class="scanner-header">
         <button class="btn-danger full-w" onclick="endAttendanceSession()">🔴 END ATTENDANCE</button>
-        <div class="scanner-info">
-          <span>📚 <span id="scan-lecture"></span></span>
-          <span>👨‍🏫 <span id="scan-teacher"></span></span>
-          <span>📍 <span id="scan-venue"></span></span>
+        <div class="scanner-meta">
+          <span>📚 <b id="scan-lecture"></b></span>
+          <span>👨‍🏫 <b id="scan-teacher"></b></span>
+          <span>📍 <b id="scan-venue"></b></span>
         </div>
         <div class="scan-counters">
           <div class="counter-box"><span id="cnt-scanned">0</span><small>Scanned</small></div>
-          <div class="counter-box"><span id="cnt-present">0</span><small>Present</small></div>
+          <div class="counter-box present-box"><span id="cnt-present">0</span><small>Present</small></div>
         </div>
       </div>
       <div class="video-wrap">
         <video id="qr-video" playsinline autoplay muted></video>
+        <canvas id="scan-canvas" style="display:none;"></canvas>
         <div class="scan-overlay">
-          <div class="scan-frame"></div>
+          <div class="scan-frame">
+            <div class="scan-line"></div>
+          </div>
+          <p class="scan-hint">Point camera at student QR code</p>
         </div>
       </div>
-      <div id="scan-result-panel" class="scan-result-panel hidden">
-        <div class="srp-inner">
-          <img id="srp-photo" alt="Student"/>
-          <div class="srp-info">
-            <div id="srp-name"></div>
-            <div id="srp-id"></div>
+      <!-- SCAN RESULT POPUP -->
+      <div id="scan-popup" class="scan-popup hidden">
+        <div class="scan-popup-inner">
+          <div class="popup-photo-wrap">
+            <img id="popup-photo" src="" alt=""/>
           </div>
+          <div class="popup-name" id="popup-name"></div>
+          <div class="popup-id" id="popup-id"></div>
+          <button id="popup-confirm-btn" class="btn-confirm-big" onclick="confirmAttendance()">
+            <span class="confirm-tick">✓</span> CONFIRM ATTENDANCE
+          </button>
+          <div id="popup-already" class="popup-already hidden">
+            ⚠️ Attendance Already Marked!
+          </div>
+          <div id="popup-notfound" class="popup-notfound hidden">
+            ❌ Student Not Found in System
+          </div>
+          <button class="popup-close-btn" onclick="closePopup()">✕ Close</button>
         </div>
-        <button id="srp-confirm-btn" class="btn-confirm" onclick="confirmAttendance()">✓ CONFIRM ATTENDANCE</button>
-        <div id="srp-warning" class="srp-warning hidden">⚠ Attendance already marked!</div>
       </div>
     </div>
 
-    <!-- ATTENDANCE HISTORY PAGE -->
+    <!-- ════ ATTENDANCE HISTORY ════ -->
     <div id="page-history" class="page">
       <div class="page-header"><h2>Attendance History</h2></div>
       <div id="sessions-list" class="sessions-list"></div>
     </div>
 
-    <!-- SESSION DETAIL PAGE -->
+    <!-- ════ SESSION DETAIL ════ -->
     <div id="page-session-detail" class="page">
       <div id="session-detail-content"></div>
     </div>
 
-    <!-- EXPORT STUDENTS PAGE -->
+    <!-- ════ EXPORT STUDENTS ════ -->
     <div id="page-export-students" class="page">
       <div class="page-header"><h2>Export Students</h2></div>
       <div class="form-card">
-        <p style="color:var(--text-muted);margin-bottom:20px;">Export complete student database.</p>
-        <div class="form-actions" style="flex-direction:column;">
-          <button class="btn-primary" onclick="exportStudentsCSV()">📄 Export as CSV</button>
-          <button class="btn-secondary" onclick="exportStudentsExcel()">📊 Export as Excel (XLS)</button>
+        <p class="info-text">Export complete student database to file.</p>
+        <div class="form-actions" style="flex-direction:column;gap:10px;">
+          <button class="btn-primary full-w" onclick="exportStudentsCSV()">📄 Export as CSV</button>
+          <button class="btn-secondary full-w" onclick="exportStudentsExcel()">📊 Export as Excel</button>
         </div>
       </div>
     </div>
 
-    <!-- EXPORT ATTENDANCE PAGE -->
+    <!-- ════ EXPORT ATTENDANCE ════ -->
     <div id="page-export-attendance" class="page">
       <div class="page-header"><h2>Export Attendance</h2></div>
       <div class="form-card">
         <div class="form-group">
           <label>Export Type</label>
-          <select id="exp-type">
+          <select id="exp-type" onchange="toggleExportOptions()">
             <option value="all">All Attendance Records</option>
             <option value="session">Single Session</option>
             <option value="daterange">Date Range</option>
@@ -299,34 +306,34 @@
             <input type="date" id="exp-date-to"/>
           </div>
         </div>
-        <div class="form-actions" style="flex-direction:column;margin-top:12px;">
-          <button class="btn-primary" onclick="exportAttendanceCSV()">📄 Export as CSV</button>
-          <button class="btn-secondary" onclick="exportAttendanceExcel()">📊 Export as Excel (XLS)</button>
+        <div class="form-actions" style="flex-direction:column;gap:10px;margin-top:4px;">
+          <button class="btn-primary full-w" onclick="exportAttendanceCSV()">📄 Export as CSV</button>
+          <button class="btn-secondary full-w" onclick="exportAttendanceExcel()">📊 Export as Excel</button>
         </div>
         <div id="exp-att-msg" class="form-msg hidden"></div>
       </div>
     </div>
 
-    <!-- STATS PAGE -->
+    <!-- ════ STATS ════ -->
     <div id="page-stats" class="page">
       <div class="page-header"><h2>System Statistics</h2></div>
       <div id="stats-content" class="stats-grid"></div>
     </div>
 
-    <!-- RESTORE PAGE -->
+    <!-- ════ RESTORE ════ -->
     <div id="page-restore" class="page">
       <div class="page-header"><h2>Restore Data</h2></div>
       <div class="form-card">
-        <p style="color:var(--text-muted);margin-bottom:20px;">⚠ Restoring will merge imported data with existing records.</p>
-        <div class="photo-upload-area" onclick="document.getElementById('restore-file').click()" style="height:100px;">
-          <div>📂<br/><small>Tap to select backup file (.json)</small></div>
+        <p class="info-text">⚠️ Restore will merge backup data with existing records.</p>
+        <div class="photo-upload-area" onclick="document.getElementById('restore-file').click()" style="min-height:90px;">
+          <div>📂<br/><small>Tap to select backup .json file</small></div>
           <input type="file" id="restore-file" accept=".json" class="hidden" onchange="restoreData(event)"/>
         </div>
         <div id="restore-msg" class="form-msg hidden"></div>
       </div>
     </div>
 
-  </main>
+  </main><!-- /pages -->
 
   <!-- TOAST -->
   <div id="toast" class="toast hidden"></div>
@@ -343,9 +350,21 @@
     </div>
   </div>
 
-</div>
+  <!-- SESSION END EXPORT MODAL -->
+  <div id="export-modal" class="modal-overlay hidden">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div class="modal-title">✅ Session Ended!</div>
+      <div class="modal-body" id="export-modal-summary"></div>
+      <div class="modal-actions" style="flex-direction:column;gap:8px;">
+        <button class="btn-primary full-w" onclick="exportLastSessionCSV()">📄 Export CSV</button>
+        <button class="btn-secondary full-w" onclick="exportLastSessionExcel()">📊 Export Excel</button>
+        <button class="btn-secondary full-w" onclick="closeExportModal()">Skip</button>
+      </div>
+    </div>
+  </div>
 
-<!-- EXTERNAL LIBS -->
+</div><!-- /app -->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
